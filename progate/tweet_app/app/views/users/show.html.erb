@@ -1,12 +1,12 @@
 <div class="main user-show">
   <div class="container">
     <div class="user">
-<!--      <img src="/user_images/#{}"-->
       <img src="<%= "/user_images/#{@user.image_name}" %>">
       <h2><%= @user.name %></h2>
       <p><%= @user.email %></p>
-      <%= link_to('編集', "/users/#{@user.id}/edit") %>
-      <%#= link_to('保存', "/users/#{@user.id}/update") %>
+      <% if @user.id == @current_user.id %>
+        <%= link_to('編集', "/users/#{@user.id}/edit") %>
+      <% end %>
     </div>
   </div>
 </div>
