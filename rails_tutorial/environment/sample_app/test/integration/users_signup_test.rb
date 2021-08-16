@@ -54,6 +54,6 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     # redirect_to @user の表示を追うため
     follow_redirect!
     assert_template 'users/show'
-    assert_not flash.empty?
+    assert is_logged_in?
   end
 end
