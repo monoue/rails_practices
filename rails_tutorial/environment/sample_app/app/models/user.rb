@@ -75,8 +75,16 @@ class User < ApplicationRecord
     reset_sent_at < 2.hours.ago
   end
 
+  # SQL。こっちでいい。
+  # def feed
+  #   following_ids = "SELECT followed_id FROM relationships WHERE follower_id = :user_id"
+  #   Micropost.where("user_id IN (#{following_ids}) OR user_id = :user_id", user_id: id)
+  # end
+
+  # 最後の演習問題。Rails で、効率が良いまま、直接表現。LEFT JOIN, すなわち left_outer_joins メソッドを使用。ムズい。
   def feed
-    Micropost.where('user_id = ?', id)
+    part_of_feed = "relationships.follower_id = :id or microposts.user_id = :id"
+    Micropost.left_outer_joins(user: :followers).where(part_of_feed, { id: id }).distinct.includes(:user, image_attachment: :blob)
   end
 
   # ユーザーをフォローする
